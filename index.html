@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <meta name="color-scheme" content="light">
+  <title>A little something for Yashfa 💗</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ============ AMBIENT LAYER (grid bg, blobs, floating hearts) ============ -->
+  <div class="stage-bg" aria-hidden="true">
+    <svg class="grid-texture" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="graphGrid" width="26" height="26" patternUnits="userSpaceOnUse">
+          <path d="M 26 0 L 0 0 0 26" fill="none" stroke="currentColor" stroke-width="1" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#graphGrid)" />
+    </svg>
+
+    <svg class="blob blob-tl" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M300,0 C300,120 220,90 170,150 C110,220 180,300 60,300 L0,300 L0,0 Z" />
+    </svg>
+    <svg class="blob blob-br" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,300 C0,180 90,210 140,150 C200,80 120,0 240,0 L300,0 L300,300 Z" />
+    </svg>
+
+    <div id="floatingBits" class="floating-bits"></div>
+  </div>
+
+  <!-- ============ TOP UTILITY CONTROLS ============ -->
+  <div class="utility-controls">
+    <button id="musicToggle" class="pill-btn music-btn" aria-label="Toggle music" title="Music">
+      <span class="music-icon">🎵</span><span class="music-label">Music</span>
+    </button>
+    <button id="restartBtn" class="pill-btn restart-btn" aria-label="Restart surprise" title="Restart the surprise">
+      ↩ Restart
+    </button>
+  </div>
+
+  <audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
+    <source src="assets/audio/birthday-music.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sfxClick" preload="none">
+    <source src="assets/audio/click.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sfxGift" preload="none">
+    <source src="assets/audio/gift-open.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sfxCelebrate" preload="none">
+    <source src="assets/audio/celebration.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ============ MAIN STORY CONTAINER ============ -->
+  <main class="story-frame">
+
+    <!-- SCENE 1 — INTRO -->
+    <section class="scene active" data-scene="intro">
+      <div class="card scrapbook-card">
+        <div class="mascot mascot-wave" aria-hidden="true">
+          <svg viewBox="0 0 200 190" class="cat-svg">
+            <use href="#kawaiiCatWave" />
+          </svg>
+        </div>
+        <p class="eyebrow-tag">psst... yashfa</p>
+        <h1 class="script-huge">HEY!!</h1>
+        <p class="hand-line">I made something for you...</p>
+        <p class="hand-line small">Do you want to see?</p>
+
+        <div class="choice-row" id="choiceRow">
+          <button class="btn btn-primary" id="yesBtn">YES</button>
+          <button class="btn btn-ghost" id="noBtn">NO</button>
+        </div>
+        <p class="taunt-text" id="tauntText">Are you sure? 👀</p>
+      </div>
+    </section>
+
+    <!-- SCENE 2 — GREETING -->
+    <section class="scene" data-scene="greeting">
+      <div class="card scrapbook-card">
+        <div class="mascot mascot-bounce" aria-hidden="true">
+          <svg viewBox="0 0 200 190" class="cat-svg">
+            <use href="#kawaiiCatHeart" />
+          </svg>
+        </div>
+        <h1 class="script-huge tight">HAPPY BIRTHDAY<br>YASHFA <span class="heart-red">❤️</span></h1>
+        <p class="hand-line">You are my favorite person to laugh with.</p>
+        <p class="hand-line">Stay cute, stay happy, stay you. 💗</p>
+        <button class="btn btn-primary" data-next="cake">NEXT →</button>
+      </div>
+    </section>
+
+    <!-- SCENE 2.5 — BIRTHDAY CAKE / BLOW THE CANDLES -->
+    <section class="scene" data-scene="cake">
+      <div class="card scrapbook-card cake-card">
+        <h2 class="script-mid">Make a wish, Yashfa! 🎂</h2>
+
+        <div class="cake-wrap">
+          <div class="mascot mascot-party small-mascot" id="cakeCat" aria-hidden="true">
+            <svg viewBox="0 0 200 190" class="cat-svg">
+              <use href="#kawaiiCatParty" />
+            </svg>
+          </div>
+
+          <div class="cake" id="cakeEl">
+            <div class="cake-candles">
+              <div class="candle"><span class="flame-glow"></span><span class="flame"></span></div>
+              <div class="candle candle-tall"><span class="flame-glow"></span><span class="flame"></span></div>
+              <div class="candle"><span class="flame-glow"></span><span class="flame"></span></div>
+            </div>
+            <div class="cake-top">
+              <span class="sprinkle s1"></span><span class="sprinkle s2"></span>
+              <span class="sprinkle s3"></span><span class="sprinkle s4"></span>
+              <span class="sprinkle s5"></span>
+            </div>
+            <div class="cake-drip"></div>
+            <div class="cake-middle"></div>
+            <div class="cake-base"></div>
+          </div>
+        </div>
+
+        <p class="hand-line small" id="wishPrompt">Close your eyes... make your biggest wish... ✨</p>
+        <p class="tap-hint" id="blowInstruction">Blow the candles! 🕯️💨</p>
+
+        <div class="choice-row blow-row" id="blowRow">
+          <button class="btn btn-primary" id="tapBlowBtn">Tap to blow 🕯️💨</button>
+          <button class="btn btn-ghost" id="micBlowBtn" hidden>🎤 Blow the candles</button>
+        </div>
+        <p class="hand-line small mic-hint" id="micHint" hidden>Listening... blow into your mic 🎤</p>
+
+        <div class="cake-result" id="cakeResult">
+          <h3 class="script-love">YAY!! 🎉</h3>
+          <p class="hand-line">Wish made! 💗</p>
+          <p class="hand-line small">I hope every little thing you wished for comes true.</p>
+          <p class="hand-line birthday-reprise">Happy Birthday, Yashfa! ❤️</p>
+          <p class="letter-text center">May this year bring you more laughter, more beautiful memories, more adventures,
+            and all the happiness you deserve.</p>
+          <button class="btn btn-primary" data-next="mystery" id="afterCakeBtn">Now... there's one more surprise →
+            🎁</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 3 — MYSTERY + GIFT -->
+    <section class="scene" data-scene="mystery">
+      <div class="card scrapbook-card">
+        <h2 class="script-mid">There's something waiting for you...</h2>
+
+        <div class="gift-wrap">
+          <div class="gift-box" id="giftBox" role="button" tabindex="0" aria-label="Open the gift">
+            <div class="gift-lid">
+              <div class="ribbon-v"></div>
+              <div class="bow">
+                <span class="bow-loop left"></span>
+                <span class="bow-loop right"></span>
+                <span class="bow-knot"></span>
+              </div>
+            </div>
+            <div class="gift-body">
+              <div class="ribbon-v"></div>
+            </div>
+            <div class="gift-glow" aria-hidden="true"></div>
+          </div>
+          <div class="mascot mascot-peek small-mascot" aria-hidden="true">
+            <svg viewBox="0 0 200 190" class="cat-svg">
+              <use href="#kawaiiCatCurious" />
+            </svg>
+          </div>
+        </div>
+
+        <p class="tap-hint">Tap here to open 🎁</p>
+      </div>
+    </section>
+
+    <!-- SCENE 4 — HEARTFELT MESSAGE -->
+    <section class="scene" data-scene="message">
+      <div class="card scrapbook-card letter-card">
+        <div class="mascot mascot-peek-side" aria-hidden="true">
+          <svg viewBox="0 0 200 190" class="cat-svg">
+            <use href="#kawaiiCatCurious" />
+          </svg>
+        </div>
+        <h2 class="script-mid">A little letter for you</h2>
+        <p class="letter-text">
+          You are one of those people who make ordinary days feel special.
+          I'm really lucky to have a friend like you — someone who laughs at my
+          weird jokes, remembers the little things, and shows up exactly when
+          it matters.
+        </p>
+        <p class="letter-text">
+          I hope this birthday brings you countless reasons to smile, beautiful
+          memories, and all the happiness you deserve.
+        </p>
+        <p class="letter-sign">— always your favorite chaos partner</p>
+        <button class="btn btn-primary" data-next="memories">Click here →</button>
+      </div>
+    </section>
+
+    
+    <!-- SCENE 5 — MEMORIES -->
+    <section class="scene" data-scene="memories">
+      <div class="card scrapbook-card memories-card">
+        <h2 class="script-mid">You look gorgeous as always.</h2>
+
+        <div class="polaroid-row">
+          <div class="polaroid p1" data-caption="Forever grateful for you.">
+            <img src="assets/images/photo1.jpg" alt="Yashfa memory 1"
+              onerror="this.closest('.polaroid').classList.add('img-missing')">
+            <span class="polaroid-fallback">📷<br>your photo here</span>
+            <p class="polaroid-label">OUTSTANDING</p>
+          </div>
+          <div class="polaroid p2" data-caption="The absolute best of the best.">
+            <img src="assets/images/photo2.jpg" alt="Yashfa memory 2"
+              onerror="this.closest('.polaroid').classList.add('img-missing')">
+            <span class="polaroid-fallback">📷<br>your photo here</span>
+            <p class="polaroid-label">FANTASTIC</p>
+          </div>
+          <div class="polaroid p3" data-caption="Deserves an award just for dealing with me.">
+            <img src="assets/images/photo3.jpg" alt="Yashfa memory 3"
+              onerror="this.closest('.polaroid').classList.add('img-missing')">
+            <span class="polaroid-fallback">📷<br>your photo here</span>
+            <p class="polaroid-label">FABULOUS</p>
+          </div>
+        </div>
+        <p class="polaroid-caption-display" id="polaroidCaption">Tap a photo to get a compliment</p>
+
+        <h3 class="script-love">I LOVE YOU ❤️</h3>
+        <p class="hand-line small">You don't know how much your friendship means to me.</p>
+
+        <div class="deco-row" aria-hidden="true">
+          <span>🎂</span><span>🕯️</span><span>🎁</span><span>💐</span><span>🎀</span>
+        </div>
+
+        <button class="btn btn-primary" data-next="hug">Continue →</button>
+      </div>
+    </section>
+    <!-- SCENE 6 — VIRTUAL HUG -->
+    <section class="scene" data-scene="hug">
+      <div class="card scrapbook-card hug-card">
+        <h2 class="script-mid">Here's a virtual hug for you 🤗</h2>
+
+        <div class="hug-stage" id="hugStage">
+          <div class="mascot hug-char hug-char-1" aria-hidden="true">
+            <svg viewBox="0 0 200 190" class="cat-svg">
+              <use href="#kawaiiCatFlowers" />
+            </svg>
+          </div>
+          <div class="mascot hug-char hug-char-2" aria-hidden="true">
+            <svg viewBox="0 0 200 190" class="cat-svg">
+              <use href="#kawaiiCatWalk" />
+            </svg>
+          </div>
+          <div class="hug-sparkles" aria-hidden="true">✨💕✨</div>
+        </div>
+
+        <p class="hand-line hug-message" id="hugMessage">
+          No matter how far apart we are, here's a little reminder that you're
+          loved, appreciated, and never alone in your friendship circle. ❤️
+        </p>
+
+        <button class="btn btn-primary" data-next="final">Continue →</button>
+      </div>
+    </section>
+
+    <!-- SCENE 7 — FINAL -->
+    <section class="scene" data-scene="final">
+      <div class="card scrapbook-card final-card">
+        <div class="mascot mascot-bounce" aria-hidden="true">
+          <svg viewBox="0 0 200 190" class="cat-svg">
+            <use href="#kawaiiCatHeart" />
+          </svg>
+        </div>
+        <h1 class="script-huge tight">HAPPY BIRTHDAY,<br>YASHFA! 🎂❤️</h1>
+        <p class="hand-line date-line">26 NOVEMBER</p>
+        <p class="letter-text center">
+          May your new year of life be filled with happiness, laughter,
+          success, beautiful memories, and countless reasons to smile.
+        </p>
+        <p class="script-love small-love">Made especially for Yashfa 💗</p>
+        <div class="final-deco" aria-hidden="true">🎁🎂💗</div>
+        <button class="btn btn-ghost" id="replayBtn">↩ Watch it again</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ SVG SPRITE: reusable kawaii mascot library ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+
+      <!-- base cat face group reused via clones with different accessories -->
+      <g id="kawaiiCatBase">
+        <ellipse cx="100" cy="115" rx="72" ry="62" fill="#FBEDE6" />
+        <path d="M40 75 L55 20 L85 68 Z" fill="#FBEDE6" />
+        <path d="M160 75 L145 20 L115 68 Z" fill="#FBEDE6" />
+        <path d="M48 68 L58 34 L78 64 Z" fill="#F2C6CE" />
+        <path d="M152 68 L142 34 L122 64 Z" fill="#F2C6CE" />
+        <circle cx="72" cy="112" r="10" fill="#3A2A2E" />
+        <circle cx="128" cy="112" r="10" fill="#3A2A2E" />
+        <circle cx="75" cy="108" r="3.4" fill="#fff" />
+        <circle cx="131" cy="108" r="3.4" fill="#fff" />
+        <ellipse cx="55" cy="132" rx="10" ry="6" fill="#F5B8C4" opacity="0.8" />
+        <ellipse cx="145" cy="132" rx="10" ry="6" fill="#F5B8C4" opacity="0.8" />
+        <path d="M94 122 Q100 128 106 122" stroke="#3A2A2E" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <path d="M100 118 L96 124 L104 124 Z" fill="#E89AAE" />
+      </g>
+
+      <symbol id="kawaiiCatWave" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <path d="M158 128 Q182 110 176 84 Q174 76 166 80 Q170 92 158 100" fill="#FBEDE6" stroke="#FBEDE6" />
+        <circle cx="167" cy="83" r="7" fill="#FBEDE6" />
+      </symbol>
+
+      <symbol id="kawaiiCatHeart" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <path
+          d="M100 150 c-14-12-26-20-26-32 c0-9 7-15 15-15 c6 0 9 3 11 7 c2-4 5-7 11-7 c8 0 15 6 15 15 c0 12-12 20-26 32z"
+          fill="#E8637D" />
+      </symbol>
+
+      <symbol id="kawaiiCatCurious" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <circle cx="150" cy="60" r="5" fill="#F2C6CE" />
+        <circle cx="160" cy="72" r="3" fill="#F2C6CE" />
+      </symbol>
+
+      <symbol id="kawaiiCatFlowers" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <g transform="translate(52 148)">
+          <circle r="6" fill="#E8637D" />
+          <circle cx="-9" cy="-4" r="5" fill="#F2C6CE" />
+          <circle cx="9" cy="-4" r="5" fill="#F2C6CE" />
+          <circle cx="-6" cy="7" r="5" fill="#F2C6CE" />
+          <circle cx="6" cy="7" r="5" fill="#F2C6CE" />
+          <circle r="3" fill="#F7D774" />
+        </g>
+        <g transform="translate(146 150)">
+          <circle r="6" fill="#E8637D" />
+          <circle cx="-9" cy="-4" r="5" fill="#F2C6CE" />
+          <circle cx="9" cy="-4" r="5" fill="#F2C6CE" />
+          <circle cx="-6" cy="7" r="5" fill="#F2C6CE" />
+          <circle cx="6" cy="7" r="5" fill="#F2C6CE" />
+          <circle r="3" fill="#F7D774" />
+        </g>
+      </symbol>
+
+      <symbol id="kawaiiCatParty" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <path d="M100 22 L118 62 L82 62 Z" fill="#E8637D" />
+        <circle cx="100" cy="20" r="6" fill="#F7D774" />
+        <rect x="90" y="46" width="20" height="6" fill="#F7C9D3" />
+        <g transform="translate(158 128)">
+          <ellipse rx="12" ry="15" fill="#E8637D" />
+          <path d="M0 15 L0 26" stroke="#B75468" stroke-width="1.5" />
+          <path d="M-4 13 L0 15 L4 13" fill="none" stroke="#E8637D" stroke-width="1.5" />
+        </g>
+      </symbol>
+
+      <symbol id="kawaiiCatWalk" viewBox="0 0 200 190">
+        <use href="#kawaiiCatBase" />
+        <g transform="translate(70 46) rotate(-18)">
+          <path d="M0 0 Q-10 -8 -2 -14 Q6 -18 8 -8 Q16 -12 16 -2 Q16 8 6 6 Q10 14 0 12 Q-8 10 0 0Z" fill="#E8637D" />
+        </g>
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
